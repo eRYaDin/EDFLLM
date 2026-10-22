@@ -1,139 +1,94 @@
-# EEG EDF Lab
+# EDFLLM — model perintah kecil dan pengenal emosi EEG
 
-Aplikasi desktop Python untuk membaca dua EDF, menjelaskan isi rekamannya, membandingkan sinyal, serta melatih dan menjalankan tujuh eksperimen jaringan. Seluruh kode berada di folder ini; tidak mengimpor atau mengubah aplikasi Rin maupun Modul Perasaan lain.
+Pengguna memasukkan EEG dalam EDF dan memberi perintah bahasa Indonesia. **Model pemaham perintah yang dilatih sendiri** mengenali tugas, mengambil parameter, lalu memanggil jaringan pengenal emosi. Hasil berupa garis waktu, tabel, dan keterangan terstruktur.
+
+Tidak memakai Gemma, Ollama, API chat, atau bobot pretrained. Nama repo tetap EDFLLM; komponen bahasanya adalah **neural intent classifier kecil**, bukan LLM generatif. Tujuh jaringan EEG juga dilatih dari bobot acak dengan NumPy.
 
 ## Mulai
 
-Klik **JALANKAN.bat** setelah menjalankan INSTALL.bat pada instalasi baru.
+1. Pada instalasi baru: pasang Python 3.11+ dengan Tkinter lalu jalankan INSTALL.bat. Unduhan paket awal memerlukan internet.
+2. Jalankan **JALANKAN.bat**. Model perintah dan 14 checkpoint EEG sudah tersedia pada komputer ini. Checkpoint, laporan training, dan EDF tidak diunggah ke GitHub; pada salinan repo baru jalankan latihan terlebih dahulu.
+3. Tab **Data & rentang waktu**: pilih EDF A, tambahkan B untuk perbandingan. Klik **Baca file**, lalu pilih trial dari anotasi atau isi awal/durasi. Kanal berasal dari header EDF, tidak ditetapkan ke C3/C4.
+4. Tab **Perintah & hasil**: ketik satu tugas dan klik **Jalankan perintah**. Tombol contoh mengisi kalimat untuk dijalankan.
+5. Baca ringkasan, garis waktu, segmen, dan rincian proses. Simpan JSON/CSV/grafik bila diperlukan.
 
-1. **Masukkan data:** pilih EDF A dan EDF B. Boleh file yang sama untuk membandingkan dua waktu. JSON/TSV bernama cocok ditemukan otomatis dan bersifat opsional.
-2. **Pilih segmen:** tentukan awal A/B dan durasi. Semua kanal tegangan bersama mengikuti header EDF; bisa dibatasi manual. Periksa sampling dan filter, lalu hitung perbandingan.
-3. **Lihat hasil:** pilih kanal; baca penjelasan RMS/daya pita, grafik, dan tabel dengan satuan. Simpan laporan bila diperlukan.
-4. **Tanya AI:** aktifkan Ollama, masukkan nama model lokal, lalu tanyakan hasil. LLM menerima angka hasil hitung kanal pilihan dan menjelaskannya. Percakapan direset ketika kanal atau perbandingan berubah.
+EDF lokal kini berada di `data/raw/`. Versi sebelumnya disimpan lokal di `archive/legacy-comparison-20261023/` dan riwayat Git commit `2ea5999`.
 
-**Laboratorium model** terpisah untuk training dan prediksi. Membandingkan EDF tidak memerlukan manifest atau model terlatih. CSV hasil perbandingan dan beh.tsv bukan manifest training. Lihat [panduan alur](PANDUAN_ALUR.md).
+## Contoh perintah
 
-Untuk instalasi ulang/perangkat lain: pasang Python 3.11+ dengan Tkinter, lalu jalankan INSTALL.bat. Internet diperlukan untuk paket awal, bukan untuk pembandingan EDF. Environment memakai edfio agar tidak membutuhkan build C pembaca EDF pada Python 3.14.
+| Kalimat | Tindakan |
+|---|---|
+| klasifikasikan emosi A | Prediksi kelas tiap window 4 detik pada rentang pilihan |
+| cari bagian sedih di B | Prediksi lalu saring window kelas sedih yang tidak ditandai belum yakin |
+| bandingkan emosi A dan B | Prediksi dua rekaman dan bandingkan proporsi durasi kelas |
+| bandingkan sinyal A dan B | Hitung perbedaan statistik dan daya frekuensi |
+| tampilkan informasi EDF A | Baca durasi, kanal, sampling, anotasi |
+| bagaimana cara memakai aplikasi | Panduan |
 
-## Yang sudah bisa dipakai
+Tambahkan `dengan tanh` atau nama jaringan lain; `auto` memakai skor validasi terbaik. Rentang eksplisit didukung, misalnya `detik 800 sampai 828`. Tombol **Seluruh rekaman** memilih pemrosesan bertahap seluruh file. Jeda/penilaian di luar percobaan tidak terwakili dalam latihan. Prediksi mengikuti kanal dan preprocessing model tersimpan.
 
-- Membaca EDF/EDF+ kontinu: informasi pasien/rekaman yang tersedia, waktu/durasi, nama kanal, sampling per kanal, satuan, rentang skala fisik, prefilter, transducer, dan anotasi.
-- Membaca TSV pendamping sebagai tabel melalui tombol masing-masing rekaman. Arti trigger tidak ditebak menjadi emosi. Tampilan TSV dibatasi 200 baris.
-- Mencocokkan nama kanal persis, tanpa menganggap C3 sama dengan C3-A2 atau EEG C3-REF. Nama duplikat tidak dipilih otomatis.
-- Mengubah satuan V/mV/uV/nV menjadi uV. Kanal tanpa satuan tegangan yang dikenal ditolak untuk analisis.
-- Resampling dengan filter anti-alias, band-pass Butterworth orde 4 zero-phase, dan parameter sama untuk kedua rekaman. Target sampling tidak boleh melebihi sampling asli kanal terpilih.
-- Menghitung mean, std, RMS, peak-to-peak dan daya pita delta 1–4, theta 4–8, alpha 8–13, beta 13–30, gamma 30–45 Hz. Daya pita hanya dilaporkan jika seluruh pita berada dalam rentang filter; jika tidak, ditandai tidak tersedia.
-- Membandingkan nilai A, B dan B-A. Amplitudo uV, PSD uV²/Hz, daya pita uV². Definisi pita ini konfigurasi proyek, bukan otomatis mengikuti setiap dataset.
-- Menampilkan indikator dasar kualitas dari data asli: RMS, rentang, dan proporsi sampel berurutan yang sama. Ini belum detektor artefak tervalidasi.
-- Training, evaluasi, penyimpanan, dan pemuatan tujuh model; baseline satu hidden layer versus tiga hidden layer.
-- Penjelasan opsional melalui Ollama lokal, terpisah dari hitungan. Tidak mengirim nama/identitas subjek atau seluruh sampel ke prompt LLM. Ollama harus sudah aktif dan memiliki model yang diminta.
+## Dua jenis pembelajaran
+
+**Pemaham perintah:** 154 kalimat dalam `corpus/commands.json`, dibagi 112 latihan, 21 validasi, 21 uji. Fitur kata/potongan karakter TF-IDF → ReLU 48 → 24 → 7 intent. Vocabulary/IDF hanya dibuat dari latihan. Parser terpisah mengambil rekaman, emosi, jaringan, interval. Dispatcher hanya memanggil alat yang diizinkan; kalimat bukan kode yang dieksekusi.
+
+**Pengenal emosi:** sinyal → filter/resampling → window 4 detik → log daya delta/theta/alpha/beta/gamma dan log RMS tiap kanal → jaringan → tujuh skor kelas. Metadata, nama subjek, waktu dan label anotasi tidak menjadi fitur prediksi.
+
+Kategori target: senang (joy), terinspirasi, kelembutan (tenderness), takut, jijik, sedih, netral. **Target adalah kategori stimulus**, bukan jaminan perasaan setiap window. TSV penilaian masih informasi pendamping, belum menjadi target latihan.
+
+## Tujuh jaringan
+
+Daftar pada modul tugas merupakan tujuh fungsi aktivasi. Masing-masing jaringan berada di file terpisah dalam `emotionlab/networks/` dan dipanggil registry.
+
+| Jaringan | Eksperimen emosi |
+|---|---|
+| Sigmoid | Hidden sigmoid dan tujuh output biner one-vs-rest; BCE. Skor tidak wajib berjumlah satu. |
+| ReLU | Hidden ReLU, output Softmax tujuh kelas. |
+| Softmax | Eksperimen hidden kompetitif Softmax dengan Jacobian lengkap, output Softmax. Hidden Softmax bukan pilihan standar; diuji secara eksplisit. |
+| Tanh | Hidden Tanh, output Softmax. |
+| Leaky ReLU | Hidden dengan gradien kecil pada nilai negatif, output Softmax. |
+| ELU | Hidden ELU, output Softmax. |
+| Swish | Hidden Swish, output Softmax. |
+
+Semua memakai fitur/split sama: 1 hidden `(32)` dan 3 hidden `(32,16,8)`. Pemilihan otomatis memakai macro-F1 **validasi**, bukan uji. Tidak diasumsikan setiap aktivasi memiliki kemampuan emosi khusus. Pengguna dapat memilih jaringan lewat perintah atau dropdown.
+
+## Hasil dan batas
+
+- Intent uji: **20/21 = 95,2%** pada corpus kecil buatan sendiri. Ini bukan akurasi emosi. Gate ketidakpastian dapat menolak sebagian kalimat yang diprediksi benar.
+- Model EEG otomatis awal `tanh_baseline`: akurasi subjek uji **16,2%**, macro-F1 **0,089**. Pengenal emosi masih lemah dan belum andal.
+- 84 trial menghasilkan 584 window: 196 train, 98 validasi, 290 test. Train: sub-02 stimulus 4/5; validasi: sub-02 stimulus 8; test: sub-03. Semua context dari stimulus yang sama berada di split sama. Hanya satu subjek uji.
+- Skor tertinggi <0,45, margin dua kelas <0,08, atau fitur jauh dari latihan ditandai **belum yakin**. Heuristik ini belum dikalibrasi.
+- Bandpass 1–45 Hz, resampling 128 Hz; belum ada ICA atau detektor artefak tervalidasi.
+- Perbandingan emosi menyandingkan proporsi prediksi, bukan uji statistik atau penyelarasan stimulus otomatis.
+- Evolution Algorithm ditunda. Latihan lengkap Bab 1–2 belum diklaim selesai.
+
+Kurva dan metrik: `models/emotion/training_report.json` dan `models/commands.report.json`.
+
+## Data dan latihan ulang
+
+Empat JSON/TSV disertakan. Untuk salinan repo baru, unduh [EDF sub-02](https://s3.amazonaws.com/openneuro.org/ds005540/sub-02/eeg/sub-02_task-emotion_eeg.edf) dan [EDF sub-03](https://s3.amazonaws.com/openneuro.org/ds005540/sub-03/eeg/sub-03_task-emotion_eeg.edf) ke `data/raw/`.
+
+INSTALL.bat melatih pemaham perintah setelah instalasi paket. `LATIH_PERINTAH.bat` melatih ulang model kalimat. `LATIH_EMOSI.bat` melatih semua jaringan EEG. Tombol juga tersedia di tab Model & pelatihan. Adapter latihan baru mendukung dua subjek tersebut; dataset lain perlu pemetaan trial/label baru.
+
+Sumber pemetaan: [README resmi dataset](https://github.com/OpenNeuroDatasets/ds005540) dan [kode penulis](https://github.com/ncclab-sustech/EmoEEG-MC/blob/main/preprocess.py). Kebijakan pemotongan proyek: [docs/DATA_DAN_LABEL.md](docs/DATA_DAN_LABEL.md).
 
 ## Pembagian file
 
 ```text
-main.py                         titik masuk GUI
-cli.py                          pemanggil lewat terminal
-buat_demo.py                    pembuat EDF sintetis
-eeglab/
-  gui.py                        antarmuka dan worker
-  edf_reader.py                 header, anotasi, sampel, satuan
-  events.py                     tabel TSV pendamping
-  preprocessing.py              resampling dan filter
-  features.py                   statistik, PSD, fitur window
-  comparison.py                 pembanding dan ekspor
-  summary.py                    ringkasan deterministik
-  llm.py                        penjelasan Ollama opsional
-  model_registry.py             pemanggil tujuh model
-  training.py                   dataset, split, training, inferensi
-  models/
-    base.py                     mesin dense layer, backprop, Adam
-    sigmoid.py                  model 1
-    relu.py                     model 2
-    softmax.py                  model 3
-    tanh.py                     model 4
-    leaky_relu.py               model 5
-    elu.py                      model 6
-    swish.py                    model 7
-demo/                           EDF sintetis + manifest
-output/                         hasil perbandingan dan model
-tests/test_lab.py               pengujian
+main.py, cli.py               GUI dan terminal
+emotionlab/commands.py        model pemaham perintah + parser
+emotionlab/dispatcher.py      pemanggil alat EEG
+emotionlab/dataset.py         label, trial, fitur
+emotionlab/training.py        latihan dan evaluasi tujuh jaringan
+emotionlab/inference.py       timeline dan perbandingan emosi
+emotionlab/networks/*.py      tujuh jaringan + backprop bersama
+emotionlab/edf.py, signal.py pembaca EDF dan pengolahan
+emotionlab/comparison.py      pembanding sinyal
+emotionlab/presentation.py    format hasil dan ekspor
+emotionlab/gui.py, ui_*.py    antarmuka
+corpus/commands.json          sampel kalimat dan split
+models/                      checkpoint dan evaluasi lokal; tidak dipush
+data/raw/                    EDF lokal dan empat pendamping
+output/, archive/            hasil/cache/arsip lokal; tidak dipush
 ```
 
-Ketujuh model tidak disatukan dalam satu file. Base memuat operasi bersama, registry memilih kelas, dan training memanggil kelas itu. Evolusi ditunda sesuai pembahasan; tidak disertakan. Latihan lengkap Bab 1–2 belum menjadi bagian folder aplikasi ini.
-
-## Tujuh eksperimen dan layer
-
-| Model | Hidden layer | Output | Tugas |
-|---|---|---|---|
-| Sigmoid | Sigmoid | Satu Sigmoid | Klasifikasi tepat dua kelas, binary cross-entropy |
-| ReLU | ReLU | Softmax | Klasifikasi dua atau lebih kelas |
-| Softmax | ReLU | Softmax | Baseline peran Softmax sebagai output |
-| Tanh | Tanh | Softmax | Alternatif aktivasi hidden pada tugas sama |
-| Leaky ReLU | Leaky ReLU, slope 0.01 | Softmax | Alternatif aktivasi hidden pada tugas sama |
-| ELU | ELU, alpha 1 | Softmax | Alternatif aktivasi hidden pada tugas sama |
-| Swish | z × sigmoid(z) | Softmax | Alternatif aktivasi hidden pada tugas sama |
-
-ReLU dan eksperimen Softmax memakai arsitektur sama, sehingga hasilnya bisa identik dengan seed yang sama. Tujuh ini bukan tujuh algoritma yang independen atau tujuh keahlian EEG eksklusif. Untuk label lebih dari dua kelas, eksperimen Sigmoid dilewati dan alasannya dicatat; buat manifest biner terpisah jika ingin melatihnya. Tidak menggabungkan kelas netral ke positif/negatif secara otomatis.
-
-Baseline: `jumlah_fitur → 32 → output`. Versi lebih dalam: `jumlah_fitur → 32 → 16 → 8 → output`. Layer input/output tidak dihitung sebagai hidden layer. Parameter diinisialisasi dengan seed 42. Training menggunakan mini-batch 32, Adam lr 0.001, gradient clipping norm 5, early stopping validation loss (patience 15), dan pemulihan bobot validation terbaik. Kedalaman lebih besar belum tentu lebih baik.
-
-Input model adalah fitur per window non-overlap 2 detik, disusun menurut urutan kanal dan nama fitur. Sisa segmen yang tidak penuh satu window dibuang. Normalisasi fitur di-fit pada train saja dan disimpan di .npz. Output model berupa label/skor, bukan interpretasi emosi tanpa pelatihan yang sesuai.
-
-## Training dengan data sendiri
-
-Siapkan manifest CSV atau TSV dengan kolom wajib berikut:
-
-```csv
-file,label,group,start_s,duration_s
-sub01.edf,joy,sub01,120,30
-sub01.edf,sadness,sub01,180,30
-sub02.edf,joy,sub02,100,30
-```
-
-Contoh di atas hanya format, bukan dataset yang cukup untuk training. Path relatif mengacu ke folder manifest, bukan folder program. `group` harus mewakili unit independen yang ingin diuji, biasanya subjek. Semua segmen dari EDF yang sama wajib satu group. Untuk satu subjek dengan banyak sesi, gunakan ID subjek sama jika menilai generalisasi antar-subjek.
-
-Minimal lima group, minimal dua kelas, dan semua kelas harus tersedia pada setiap split. Pembagian train/validation/test sekitar 60/20/20 berdasarkan group, dilakukan sebelum pembuatan window. Satu file tidak boleh masuk dua group; segmen tumpang tindih/duplikat dalam file sama ditolak. Aplikasi mencoba 100 seed split berurutan mulai 42 untuk memperoleh cakupan kelas; daftar group aktual disimpan. Salinan file dengan nama berbeda tidak otomatis terdeteksi sebagai duplikat: pengguna tetap perlu mengaudit dataset.
-
-Di tab model: pilih manifest, pilih kanal, model atau semua, dan epoch; tekan **Latih & bandingkan 1 vs 3 hidden layer**. Model disimpan di `output/models/<waktu>/baseline/` dan `deep/`, satu .npz per model. Laporan menyimpan kurva loss, accuracy, balanced accuracy, macro F1, confusion matrix, daftar label, settings dan group split. Metrik dihitung per window, bukan per subjek/trial.
-
-Kanal training sekarang diisi pada kolom tersendiri di tab model, terpisah dari daftar kanal perbandingan A/B. Default `auto` mengambil semua kanal tegangan bernama sama yang tersedia pada seluruh EDF dalam manifest. Untuk membatasi kanal, isi nama dipisahkan koma, misalnya `C3,C4`. Karena itu, manifest demo tetap bisa dilatih saat rekaman A/B asli sedang memilih Fp1. Nama kanal dari perbandingan tidak dipakai diam-diam untuk training.
-
-Untuk memprediksi EDF baru, klik **Muat model .npz → prediksi A dan B**. Kanal, preprocessing, urutan fitur, label, dan normalisasi mengikuti model tersimpan. Waktu/durasi mengikuti input GUI. Rekaman baru harus memakai protokol, referensi, dan distribusi yang sesuai pelatihan; model tidak menjamin generalisasi ke sembarang EDF.
-
-### Untuk EmoEEG-MC
-
-EDF, trigger, file events, dan urutan trial harus dicocokkan dari dokumentasi dataset. Aplikasi ini tidak otomatis memetakan TypeID menjadi tujuh emosi, tidak mengurutkan trial, dan tidak menganggap kolom rating sebagai label. TSV bisa dibuka untuk inspeksi, lalu manifest disusun setelah pemetaan benar. Label hilang atau trial hilang tidak boleh dikarang. Dukungan .npy DE/PSD dari derivatives belum diimplementasikan.
-
-## Contoh terminal
-
-```powershell
-.venv\Scripts\python.exe cli.py info demo\banding_A.edf
-.venv\Scripts\python.exe cli.py compare demo\banding_A.edf demo\banding_B.edf --channels C3,C4 --duration 10 --out output\contoh
-.venv\Scripts\python.exe cli.py train demo\manifest.csv --channels C3,C4 --model semua --depth both --epochs 120 --out output\models\demo
-.venv\Scripts\python.exe cli.py predict output\models\demo\deep\relu.npz demo\banding_A.edf --duration 10
-```
-
-## Batas perbandingan
-
-- Perbandingan statistik tidak membutuhkan ML. Tabel hitungan selalu dapat digunakan tanpa model terlatih atau Ollama.
-- Segmen A/B dipilih manual. Anotasi ditampilkan, tetapi penyelarasan otomatis berdasarkan stimulus belum dibuat.
-- Belum ada re-referencing, ICA, interpolasi kanal buruk, atau pemeriksaan kesetaraan montase otomatis.
-- Filter memakai konteks tambahan hingga 2 detik sebelum/sesudah bila tersedia, lalu dipotong ke segmen pilihan. Tepi file masih bisa bertransien; sampling sama tidak membuktikan kondisi eksperimennya sama.
-- Tidak melaporkan beda signifikan secara statistik, diagnosis, atau kepastian emosi dari perbedaan power.
-- EDF terputus ditolak. Pembaca dapat menolak EDF nonstandar. Tidak ada dukungan BDF/GDF di versi ini.
-- Data dan metadata ekspor mengikuti file yang dipilih, termasuk identitas yang tersedia di header. Pengguna menentukan lokasi ekspor.
-- Worker menjaga GUI responsif, tetapi belum ada pembatalan training/inferensi. Tunggu selesai sebelum menutup.
-- Modul LLM hanya menjelaskan hasil hitungan atas permintaan. Routing alat mandiri dari percakapan belum dibuat; pemanggil model saat ini registry dan kontrol GUI/CLI.
-
-## Demo dan pengujian
-
-Demo dibuat dari sinus 10 Hz/20 Hz + noise dengan label `alpha_kuat`/`beta_kuat`. Ada dua EDF pembanding dengan sampling dan satuan berbeda, serta 10 group sintetis untuk latihan. Bukan data manusia dan bukan model pengenal emosi.
-
-Jalankan UJI.bat. Tes memeriksa pembacaan EDF/annotasi, konversi satuan, penolakan input, perbandingan PSD, ekspor, split group, gradien tujuh model, training, dan pemuatan model. Bukti uji aktual dicatat di KEMAJUAN.md.
-
-## Sumber teknis
-
-- [edfio read_edf](https://edfio.readthedocs.io/en/stable/generated/edfio.read_edf.html)
-- [SciPy Welch](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.welch.html)
-- [SciPy resample_poly](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.resample_poly.html)
-- [GroupShuffleSplit](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GroupShuffleSplit.html)
+Jalankan UJI.bat. Uji integrasi EDF asli: `.venv\Scripts\python.exe -m tests.smoke_real`.

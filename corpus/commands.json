@@ -1,0 +1,772 @@
+[
+  {
+    "text": "klasifikasikan emosi rekaman A",
+    "intent": "classify",
+    "split": "train"
+  },
+  {
+    "text": "analisis emosi EEG ini",
+    "intent": "classify",
+    "split": "train"
+  },
+  {
+    "text": "tampilkan perubahan emosi sepanjang waktu",
+    "intent": "classify",
+    "split": "train"
+  },
+  {
+    "text": "prediksi emosi pada rekaman B",
+    "intent": "classify",
+    "split": "train"
+  },
+  {
+    "text": "identifikasi emosi dari sinyal EEG",
+    "intent": "classify",
+    "split": "train"
+  },
+  {
+    "text": "buat garis waktu emosi A",
+    "intent": "classify",
+    "split": "train"
+  },
+  {
+    "text": "lihat emosi setiap segmen",
+    "intent": "classify",
+    "split": "train"
+  },
+  {
+    "text": "tentukan kelas emosi rekaman",
+    "intent": "classify",
+    "split": "train"
+  },
+  {
+    "text": "periksa perubahan perasaan di EEG",
+    "intent": "classify",
+    "split": "train"
+  },
+  {
+    "text": "tampilkan prediksi per window",
+    "intent": "classify",
+    "split": "train"
+  },
+  {
+    "text": "analisa emosi data A",
+    "intent": "classify",
+    "split": "train"
+  },
+  {
+    "text": "emosi apa pada data ini",
+    "intent": "classify",
+    "split": "train"
+  },
+  {
+    "text": "buat timeline emosi",
+    "intent": "classify",
+    "split": "train"
+  },
+  {
+    "text": "cek emosi dari awal sampai akhir",
+    "intent": "classify",
+    "split": "train"
+  },
+  {
+    "text": "kenali emosi pada segmen ini",
+    "intent": "classify",
+    "split": "train"
+  },
+  {
+    "text": "klasifikasi emosi EEG dengan tanh",
+    "intent": "classify",
+    "split": "train"
+  },
+  {
+    "text": "tolong klasifikasi emosi rekaman B",
+    "intent": "classify",
+    "split": "validation"
+  },
+  {
+    "text": "aku ingin melihat garis waktu emosi",
+    "intent": "classify",
+    "split": "validation"
+  },
+  {
+    "text": "analisis perasaan setiap bagian EEG",
+    "intent": "classify",
+    "split": "validation"
+  },
+  {
+    "text": "buatkan prediksi emosi setiap bagian rekaman",
+    "intent": "classify",
+    "split": "test"
+  },
+  {
+    "text": "apa emosi dalam EEG A",
+    "intent": "classify",
+    "split": "test"
+  },
+  {
+    "text": "tunjukkan perubahan emosi dari waktu ke waktu",
+    "intent": "classify",
+    "split": "test"
+  },
+  {
+    "text": "cari bagian senang",
+    "intent": "find",
+    "split": "train"
+  },
+  {
+    "text": "temukan segmen sedih di A",
+    "intent": "find",
+    "split": "train"
+  },
+  {
+    "text": "kapan muncul emosi takut",
+    "intent": "find",
+    "split": "train"
+  },
+  {
+    "text": "tunjukkan bagian EEG yang netral",
+    "intent": "find",
+    "split": "train"
+  },
+  {
+    "text": "bagian mana yang senang",
+    "intent": "find",
+    "split": "train"
+  },
+  {
+    "text": "di detik berapa ada kesedihan",
+    "intent": "find",
+    "split": "train"
+  },
+  {
+    "text": "saring segmen dengan emosi jijik",
+    "intent": "find",
+    "split": "train"
+  },
+  {
+    "text": "pilih bagian yang terinspirasi",
+    "intent": "find",
+    "split": "train"
+  },
+  {
+    "text": "tampilkan hanya bagian sedih",
+    "intent": "find",
+    "split": "train"
+  },
+  {
+    "text": "cari waktu saat senang pada B",
+    "intent": "find",
+    "split": "train"
+  },
+  {
+    "text": "lokasi segmen takut dalam rekaman",
+    "intent": "find",
+    "split": "train"
+  },
+  {
+    "text": "temukan periode kelembutan",
+    "intent": "find",
+    "split": "train"
+  },
+  {
+    "text": "rekaman A bagian mana yang sedih",
+    "intent": "find",
+    "split": "train"
+  },
+  {
+    "text": "filter emosi netral",
+    "intent": "find",
+    "split": "train"
+  },
+  {
+    "text": "cari semua segmen gembira",
+    "intent": "find",
+    "split": "train"
+  },
+  {
+    "text": "tunjuk waktu sedih",
+    "intent": "find",
+    "split": "train"
+  },
+  {
+    "text": "tolong temukan bagian senang di B",
+    "intent": "find",
+    "split": "validation"
+  },
+  {
+    "text": "kapan EEG ini menunjukkan takut",
+    "intent": "find",
+    "split": "validation"
+  },
+  {
+    "text": "pilih hanya segmen netral",
+    "intent": "find",
+    "split": "validation"
+  },
+  {
+    "text": "di bagian mana muncul senang",
+    "intent": "find",
+    "split": "test"
+  },
+  {
+    "text": "tolong carikan bagian sedih rekaman A",
+    "intent": "find",
+    "split": "test"
+  },
+  {
+    "text": "temukan waktu yang diprediksi jijik",
+    "intent": "find",
+    "split": "test"
+  },
+  {
+    "text": "bandingkan emosi A dan B",
+    "intent": "compare_emotion",
+    "split": "train"
+  },
+  {
+    "text": "apa perbedaan emosi kedua rekaman",
+    "intent": "compare_emotion",
+    "split": "train"
+  },
+  {
+    "text": "bandingkan hasil klasifikasi dua EEG",
+    "intent": "compare_emotion",
+    "split": "train"
+  },
+  {
+    "text": "apakah emosi rekaman A berbeda dari B",
+    "intent": "compare_emotion",
+    "split": "train"
+  },
+  {
+    "text": "mana yang lebih banyak sedih A atau B",
+    "intent": "compare_emotion",
+    "split": "train"
+  },
+  {
+    "text": "lihat perbandingan perubahan emosi",
+    "intent": "compare_emotion",
+    "split": "train"
+  },
+  {
+    "text": "beda emosi dua subjek ini apa",
+    "intent": "compare_emotion",
+    "split": "train"
+  },
+  {
+    "text": "bandingkan persentase senang pada dua rekaman",
+    "intent": "compare_emotion",
+    "split": "train"
+  },
+  {
+    "text": "komparasi emosi rekaman A dengan B",
+    "intent": "compare_emotion",
+    "split": "train"
+  },
+  {
+    "text": "seberapa berbeda distribusi emosi keduanya",
+    "intent": "compare_emotion",
+    "split": "train"
+  },
+  {
+    "text": "bandingkan kedua data",
+    "intent": "compare_emotion",
+    "split": "train"
+  },
+  {
+    "text": "bandingkan A dan B",
+    "intent": "compare_emotion",
+    "split": "train"
+  },
+  {
+    "text": "beda kedua rekaman ini",
+    "intent": "compare_emotion",
+    "split": "train"
+  },
+  {
+    "text": "apakah dua rekaman memiliki emosi sama",
+    "intent": "compare_emotion",
+    "split": "train"
+  },
+  {
+    "text": "perbandingan emosi senang dan sedih A B",
+    "intent": "compare_emotion",
+    "split": "train"
+  },
+  {
+    "text": "lihat beda hasil prediksi",
+    "intent": "compare_emotion",
+    "split": "train"
+  },
+  {
+    "text": "tolong bandingkan emosi kedua file",
+    "intent": "compare_emotion",
+    "split": "validation"
+  },
+  {
+    "text": "apakah A lebih banyak senang daripada B",
+    "intent": "compare_emotion",
+    "split": "validation"
+  },
+  {
+    "text": "tampilkan perbandingan klasifikasi",
+    "intent": "compare_emotion",
+    "split": "validation"
+  },
+  {
+    "text": "apa beda distribusi emosi antara rekaman A dan B",
+    "intent": "compare_emotion",
+    "split": "test"
+  },
+  {
+    "text": "bandingkan hasil prediksi emosi keduanya",
+    "intent": "compare_emotion",
+    "split": "test"
+  },
+  {
+    "text": "lihat apakah emosi dua EEG berbeda",
+    "intent": "compare_emotion",
+    "split": "test"
+  },
+  {
+    "text": "bandingkan sinyal EEG A dan B",
+    "intent": "compare_signal",
+    "split": "train"
+  },
+  {
+    "text": "bandingkan daya alpha kedua sinyal",
+    "intent": "compare_signal",
+    "split": "train"
+  },
+  {
+    "text": "lihat beda RMS dua rekaman",
+    "intent": "compare_signal",
+    "split": "train"
+  },
+  {
+    "text": "bandingkan spektrum EEG",
+    "intent": "compare_signal",
+    "split": "train"
+  },
+  {
+    "text": "apa perbedaan frekuensi sinyal A B",
+    "intent": "compare_signal",
+    "split": "train"
+  },
+  {
+    "text": "bandingkan amplitudo sinyal",
+    "intent": "compare_signal",
+    "split": "train"
+  },
+  {
+    "text": "perbandingan gelombang EEG",
+    "intent": "compare_signal",
+    "split": "train"
+  },
+  {
+    "text": "lihat beda daya beta pada A dan B",
+    "intent": "compare_signal",
+    "split": "train"
+  },
+  {
+    "text": "bandingkan bentuk sinyal keduanya",
+    "intent": "compare_signal",
+    "split": "train"
+  },
+  {
+    "text": "beda spektrum frekuensi dua data",
+    "intent": "compare_signal",
+    "split": "train"
+  },
+  {
+    "text": "komparasi sinyal A dengan B",
+    "intent": "compare_signal",
+    "split": "train"
+  },
+  {
+    "text": "tampilkan selisih daya pita",
+    "intent": "compare_signal",
+    "split": "train"
+  },
+  {
+    "text": "bandingkan energi pita frekuensi",
+    "intent": "compare_signal",
+    "split": "train"
+  },
+  {
+    "text": "perbandingan RMS A B",
+    "intent": "compare_signal",
+    "split": "train"
+  },
+  {
+    "text": "cek beda gelombang kedua rekaman",
+    "intent": "compare_signal",
+    "split": "train"
+  },
+  {
+    "text": "lihat dua grafik sinyal",
+    "intent": "compare_signal",
+    "split": "train"
+  },
+  {
+    "text": "bandingkan amplitudo kedua EEG",
+    "intent": "compare_signal",
+    "split": "validation"
+  },
+  {
+    "text": "tampilkan perbandingan daya frekuensi",
+    "intent": "compare_signal",
+    "split": "validation"
+  },
+  {
+    "text": "perbedaan sinyal A dengan sinyal B",
+    "intent": "compare_signal",
+    "split": "validation"
+  },
+  {
+    "text": "apa beda daya alpha antara dua rekaman",
+    "intent": "compare_signal",
+    "split": "test"
+  },
+  {
+    "text": "lihat perbandingan spektrum sinyal A B",
+    "intent": "compare_signal",
+    "split": "test"
+  },
+  {
+    "text": "bandingkan nilai RMS keduanya",
+    "intent": "compare_signal",
+    "split": "test"
+  },
+  {
+    "text": "tampilkan informasi EDF",
+    "intent": "metadata",
+    "split": "train"
+  },
+  {
+    "text": "apa isi file ini",
+    "intent": "metadata",
+    "split": "train"
+  },
+  {
+    "text": "berapa kanal pada rekaman A",
+    "intent": "metadata",
+    "split": "train"
+  },
+  {
+    "text": "lihat sampling EEG",
+    "intent": "metadata",
+    "split": "train"
+  },
+  {
+    "text": "berapa lama durasi rekaman B",
+    "intent": "metadata",
+    "split": "train"
+  },
+  {
+    "text": "daftar kanal dalam EDF",
+    "intent": "metadata",
+    "split": "train"
+  },
+  {
+    "text": "baca metadata file",
+    "intent": "metadata",
+    "split": "train"
+  },
+  {
+    "text": "tampilkan anotasi rekaman",
+    "intent": "metadata",
+    "split": "train"
+  },
+  {
+    "text": "lihat informasi data A",
+    "intent": "metadata",
+    "split": "train"
+  },
+  {
+    "text": "berapa frekuensi sampling aslinya",
+    "intent": "metadata",
+    "split": "train"
+  },
+  {
+    "text": "jelaskan isi header EDF",
+    "intent": "metadata",
+    "split": "train"
+  },
+  {
+    "text": "tampilkan nama elektroda",
+    "intent": "metadata",
+    "split": "train"
+  },
+  {
+    "text": "cek satuan kanal",
+    "intent": "metadata",
+    "split": "train"
+  },
+  {
+    "text": "info rekaman B",
+    "intent": "metadata",
+    "split": "train"
+  },
+  {
+    "text": "apa saja kanal di sini",
+    "intent": "metadata",
+    "split": "train"
+  },
+  {
+    "text": "lihat ukuran dan durasi data",
+    "intent": "metadata",
+    "split": "train"
+  },
+  {
+    "text": "lihat metadata rekaman A",
+    "intent": "metadata",
+    "split": "validation"
+  },
+  {
+    "text": "berapa jumlah kanal EEG ini",
+    "intent": "metadata",
+    "split": "validation"
+  },
+  {
+    "text": "tampilkan informasi sampling",
+    "intent": "metadata",
+    "split": "validation"
+  },
+  {
+    "text": "beri informasi durasi file B",
+    "intent": "metadata",
+    "split": "test"
+  },
+  {
+    "text": "nama kanal apa saja yang tersedia",
+    "intent": "metadata",
+    "split": "test"
+  },
+  {
+    "text": "baca informasi header rekaman",
+    "intent": "metadata",
+    "split": "test"
+  },
+  {
+    "text": "bagaimana cara memakai aplikasi",
+    "intent": "help",
+    "split": "train"
+  },
+  {
+    "text": "bantuan perintah",
+    "intent": "help",
+    "split": "train"
+  },
+  {
+    "text": "apa fitur yang tersedia",
+    "intent": "help",
+    "split": "train"
+  },
+  {
+    "text": "contoh perintah EEG",
+    "intent": "help",
+    "split": "train"
+  },
+  {
+    "text": "file apa yang harus dimasukkan",
+    "intent": "help",
+    "split": "train"
+  },
+  {
+    "text": "bagaimana melatih model",
+    "intent": "help",
+    "split": "train"
+  },
+  {
+    "text": "apa arti skor prediksi",
+    "intent": "help",
+    "split": "train"
+  },
+  {
+    "text": "tujuh jaringan itu apa",
+    "intent": "help",
+    "split": "train"
+  },
+  {
+    "text": "panduan penggunaan",
+    "intent": "help",
+    "split": "train"
+  },
+  {
+    "text": "jelaskan alur aplikasi",
+    "intent": "help",
+    "split": "train"
+  },
+  {
+    "text": "cara klasifikasi emosi",
+    "intent": "help",
+    "split": "train"
+  },
+  {
+    "text": "cara memilih rekaman",
+    "intent": "help",
+    "split": "train"
+  },
+  {
+    "text": "bagaimana memulai analisis",
+    "intent": "help",
+    "split": "train"
+  },
+  {
+    "text": "bantu saya memakai program",
+    "intent": "help",
+    "split": "train"
+  },
+  {
+    "text": "cara membaca hasil",
+    "intent": "help",
+    "split": "train"
+  },
+  {
+    "text": "model ini bisa apa",
+    "intent": "help",
+    "split": "train"
+  },
+  {
+    "text": "tolong beri panduan aplikasi",
+    "intent": "help",
+    "split": "validation"
+  },
+  {
+    "text": "contoh kalimat perintah apa saja",
+    "intent": "help",
+    "split": "validation"
+  },
+  {
+    "text": "cara memahami skor model",
+    "intent": "help",
+    "split": "validation"
+  },
+  {
+    "text": "apa saja contoh instruksi yang didukung",
+    "intent": "help",
+    "split": "test"
+  },
+  {
+    "text": "bagaimana menggunakan fitur EEG",
+    "intent": "help",
+    "split": "test"
+  },
+  {
+    "text": "apa file yang dibutuhkan program",
+    "intent": "help",
+    "split": "test"
+  },
+  {
+    "text": "berapa cuaca hari ini",
+    "intent": "reject",
+    "split": "train"
+  },
+  {
+    "text": "buat puisi romantis",
+    "intent": "reject",
+    "split": "train"
+  },
+  {
+    "text": "resep nasi goreng",
+    "intent": "reject",
+    "split": "train"
+  },
+  {
+    "text": "siapa presiden",
+    "intent": "reject",
+    "split": "train"
+  },
+  {
+    "text": "hitung dua tambah dua",
+    "intent": "reject",
+    "split": "train"
+  },
+  {
+    "text": "nyanyikan lagu",
+    "intent": "reject",
+    "split": "train"
+  },
+  {
+    "text": "hapus semua file",
+    "intent": "reject",
+    "split": "train"
+  },
+  {
+    "text": "diagnosis penyakit pasien ini",
+    "intent": "reject",
+    "split": "train"
+  },
+  {
+    "text": "apakah saya depresi",
+    "intent": "reject",
+    "split": "train"
+  },
+  {
+    "text": "saya ingin bermain bola",
+    "intent": "reject",
+    "split": "train"
+  },
+  {
+    "text": "ceritakan sejarah Indonesia",
+    "intent": "reject",
+    "split": "train"
+  },
+  {
+    "text": "buat gambar kucing",
+    "intent": "reject",
+    "split": "train"
+  },
+  {
+    "text": "beli laptop baru",
+    "intent": "reject",
+    "split": "train"
+  },
+  {
+    "text": "apa kabar kamu",
+    "intent": "reject",
+    "split": "train"
+  },
+  {
+    "text": "rekomendasikan obat",
+    "intent": "reject",
+    "split": "train"
+  },
+  {
+    "text": "tulis email pekerjaan",
+    "intent": "reject",
+    "split": "train"
+  },
+  {
+    "text": "ramalan cuaca besok",
+    "intent": "reject",
+    "split": "validation"
+  },
+  {
+    "text": "tolong buat cerita cinta",
+    "intent": "reject",
+    "split": "validation"
+  },
+  {
+    "text": "diagnosis epilepsi dari EEG",
+    "intent": "reject",
+    "split": "validation"
+  },
+  {
+    "text": "beri resep masakan",
+    "intent": "reject",
+    "split": "test"
+  },
+  {
+    "text": "siapa juara sepak bola",
+    "intent": "reject",
+    "split": "test"
+  },
+  {
+    "text": "hapus folder data saya",
+    "intent": "reject",
+    "split": "test"
+  }
+]

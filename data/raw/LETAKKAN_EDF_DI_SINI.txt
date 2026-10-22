@@ -1,0 +1,6 @@
+Letakkan EDF lokal di folder ini. EDF tidak diunggah ke GitHub.
+Dataset latihan awal: sub-02_task-emotion_eeg.edf dan sub-03_task-emotion_eeg.edf.
+Empat pendamping JSON/TSV tersedia di repo; pendamping bukan pengganti sinyal EDF.
+EDF lain dapat dipakai untuk prediksi bila kanal/satuannya cocok dengan model.
+Profil label otomatis latihan saat ini hanya untuk dua subjek di atas.
+Buka JALANKAN.bat -> Data -> Baca file -> pilih trial/waktu.

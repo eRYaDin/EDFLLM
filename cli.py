@@ -1,42 +1,30 @@
+import os
+os.environ.setdefault('OPENBLAS_NUM_THREADS','1')
+os.environ.setdefault('OMP_NUM_THREADS','1')
 import argparse
 import json
-from pathlib import Path
-from eeglab.preprocessing import Settings
-from eeglab.comparison import compare,export
-from eeglab.summary import summarize
-from eeglab.training import train_manifest,predict_file
-from eeglab.edf_reader import inspect_edf
-from eeglab.model_registry import MODELS
-
+from emotionlab.commands import train_commands
+from emotionlab.training import train_all
+from emotionlab.dataset import ROOT,build_manifest
+from emotionlab.dispatcher import dispatch
+from emotionlab.presentation import explain,export_result
 
 def main():
-    parser=argparse.ArgumentParser(description='EDF Lab — GUI: python main.py')
-    sub=parser.add_subparsers(dest='action',required=True)
-    inspect=sub.add_parser('info');inspect.add_argument('file')
-    comp=sub.add_parser('compare');comp.add_argument('a');comp.add_argument('b')
-    comp.add_argument('--start-a',type=float,default=0);comp.add_argument('--start-b',type=float,default=0)
-    comp.add_argument('--duration',type=float,default=10);comp.add_argument('--out',default='output/perbandingan')
-    train=sub.add_parser('train');train.add_argument('manifest');train.add_argument('--model',choices=['semua',*MODELS],default='semua')
-    train.add_argument('--epochs',type=int,default=120);train.add_argument('--depth',choices=['baseline','deep','both'],default='both')
-    train.add_argument('--out',default='output/models')
-    for command in (comp,train):
-        command.add_argument('--channels',required=True,help='Nama persis, dipisahkan koma')
-        command.add_argument('--fs',type=float,default=128);command.add_argument('--low',type=float,default=1);command.add_argument('--high',type=float,default=45)
-    pred=sub.add_parser('predict');pred.add_argument('model');pred.add_argument('edf')
-    pred.add_argument('--start',type=float,default=0);pred.add_argument('--duration',type=float,default=10)
-    args=parser.parse_args()
-    if args.action=='info':print(json.dumps(inspect_edf(args.file),ensure_ascii=False,indent=2));return
-    if args.action=='predict':print(json.dumps(predict_file(args.model,args.edf,args.start,args.duration),ensure_ascii=False,indent=2));return
-    settings=Settings(fs=args.fs,low=args.low,high=args.high);channels=[c.strip() for c in args.channels.split(',')]
-    if args.action=='compare':
-        result=compare(args.a,args.b,channels,args.start_a,args.start_b,args.duration,settings)
-        print(summarize(result['report']));print('Laporan:',export(result,args.out))
+    p=argparse.ArgumentParser(description='Model perintah kecil + tujuh jaringan emosi EEG')
+    sub=p.add_subparsers(dest='action',required=True)
+    sub.add_parser('train-commands');sub.add_parser('inspect-labels')
+    t=sub.add_parser('train-emotion');t.add_argument('--epochs',type=int,default=160)
+    r=sub.add_parser('run');r.add_argument('command');r.add_argument('--a');r.add_argument('--b')
+    r.add_argument('--start-a',type=float,default=0);r.add_argument('--start-b',type=float,default=0)
+    r.add_argument('--duration',type=float,default=28);r.add_argument('--network',default='auto');r.add_argument('--out')
+    args=p.parse_args()
+    if args.action=='train-commands':print(json.dumps(train_commands()['evaluation'],indent=2,ensure_ascii=False))
+    elif args.action=='train-emotion':print('Model terpilih:',train_all(epochs=args.epochs)['selected'])
+    elif args.action=='inspect-labels':
+        rows,channels=build_manifest();print(f'{len(rows)} trial, {len(channels)} kanal');print(json.dumps(rows[:3],indent=2))
     else:
-        for depth,hidden in [('baseline',(32,)),('deep',(32,16,8))]:
-            if args.depth not in (depth,'both'):continue
-            report=train_manifest(args.manifest,channels,settings,Path(args.out)/depth,
-                                   list(MODELS) if args.model=='semua' else [args.model],args.epochs,hidden)
-            print(depth,[(r['model'],r.get('metrics',r.get('reason'))) for r in report['results']])
-
+        records={'A':{'file':args.a or '', 'start':args.start_a,'duration':args.duration},'B':{'file':args.b or '', 'start':args.start_b,'duration':args.duration}}
+        result=dispatch(args.command,records,args.network);print(explain(result))
+        if args.out:print('Tersimpan:',export_result(result,args.out))
 
 if __name__=='__main__':main()

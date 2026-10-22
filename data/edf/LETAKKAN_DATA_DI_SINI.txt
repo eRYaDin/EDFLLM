@@ -1,0 +1,11 @@
+Letakkan file EDF asli di folder ini.
+File pendamping JSON dan TSV boleh disimpan di sini juga, atau dalam subfolder per peserta.
+
+Contoh:
+sub-02_task-emotion_eeg.edf
+sub-02_task-emotion_eeg.json
+sub-02_task-emotion_beh.tsv
+
+Buka JALANKAN.bat, klik Pilih EDF pada Rekaman A/B, lalu pilih file dari folder ini.
+File yang sama boleh dipilih sebagai A dan B untuk membandingkan segmen waktu yang berbeda.
+Aplikasi tidak mengubah file EDF sumber.
